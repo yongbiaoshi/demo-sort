@@ -7,11 +7,11 @@ import java.util.stream.IntStream;
 
 public class Main {
 
-    private static final int LEN = 100;
+    private static final int LEN = 1000;
     private static int[] array = newArray(LEN);
     private static int[] correct;
-    private static int from = 0;
-    private static int to = 100;
+    private static int from = 10; // 排序开始下标
+    private static int to = 800; // 排序结束下标
 
     static {
         print(array);
@@ -30,9 +30,12 @@ public class Main {
     }
 
     private static void test(int[] array, Sorter sorter) {
+        long start = System.nanoTime();
         int count = sorter.sort(array, from, to);
+        long end = System.nanoTime();
+
         print(array);
-        System.out.println(sorter.name() + "-循环次数：" + count);
+        System.out.println(sorter.name() + "-循环次数：" + count + "，耗时：" + (end - start) + "ns");
         // 判断排序结果是否正确
         if (!checkSorted(array)) {
             System.err.println(sorter.name() + "排序失败");
@@ -58,7 +61,12 @@ public class Main {
     }
 
     private static void print(int[] array) {
-        System.out.println(Arrays.toString(array));
+        int maxLength = 50;
+        if (array.length > maxLength) {
+            System.out.println(Arrays.toString(Arrays.copyOfRange(array, 0, maxLength)));
+        } else {
+            System.out.println(Arrays.toString(array));
+        }
     }
 
     /**
