@@ -30,31 +30,32 @@ public class MergeSorter implements Sorter {
     @Override
     public void sort(int[] array, int fromIndex, int toIndex) {
         int l = toIndex - fromIndex;
+        if (l < 2) return;
         if (l == 2) {
             if (array[fromIndex] > array[fromIndex + 1]) {
                 ArrayUtils.swap(array, fromIndex, fromIndex + 1);
             }
-        } else if (l >= 3) {
-            int subToIndex = fromIndex + l / 2 + 1; // 因为sort方法，排序区间是左闭右开的，所以需要 + 1
-            sort(array, fromIndex, subToIndex);
-            sort(array, subToIndex, toIndex);
-            int[] subArray = new int[l];
-            for (int i = fromIndex, j = subToIndex, k = 0; k < l; k++) {
-                if (j >= toIndex) {
-                    subArray[k] = array[i];
-                    i++;
-                } else if (i >= subToIndex) {
-                    subArray[k] = array[j];
-                    j++;
-                } else if (array[i] <= array[j]) {
-                    subArray[k] = array[i];
-                    i++;
-                } else {
-                    subArray[k] = array[j];
-                    j++;
-                }
-            }
-            System.arraycopy(subArray, 0, array, fromIndex, l);
+            return;
         }
+        int subToIndex = fromIndex + l / 2 + 1; // 因为sort方法，排序区间是左闭右开的，所以需要 + 1
+        sort(array, fromIndex, subToIndex);
+        sort(array, subToIndex, toIndex);
+        int[] subArray = new int[l];
+        for (int i = fromIndex, j = subToIndex, k = 0; k < l; k++) {
+            if (j >= toIndex) {
+                subArray[k] = array[i];
+                i++;
+            } else if (i >= subToIndex) {
+                subArray[k] = array[j];
+                j++;
+            } else if (array[i] <= array[j]) {
+                subArray[k] = array[i];
+                i++;
+            } else {
+                subArray[k] = array[j];
+                j++;
+            }
+        }
+        System.arraycopy(subArray, 0, array, fromIndex, l);
     }
 }

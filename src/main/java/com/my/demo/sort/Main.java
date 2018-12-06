@@ -2,46 +2,65 @@ package com.my.demo.sort;
 
 import org.apache.commons.lang3.RandomUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class Main {
 
-    private static final int LEN = 10000;
+    private static final int LEN = 100000;
+    private static final int REPEATS = 3;
     private static int[] array = newArray(LEN);
     private static int[] correct;
-    private static int from = 0; // 排序开始下标
-    private static int to = 10000; // 排序结束下标
 
     static {
         print(array);
         correct = copy(array);
-        Arrays.sort(correct, from, to);
+        Arrays.sort(correct);
         print(correct);
         System.out.println("=============");
     }
 
-    public static void main(String[] args) {
 
-        test(copy(array), new SelectionSorter());
-        test(copy(array), new BubbleSorter());
-        test(copy(array), new InsertionSorter());
-        test(copy(array), new ShellSorter());
-        test(copy(array), new MergeSorter());
+    public static void main(String[] args) {
+        List<SortTimeInfo> list = new ArrayList<>();
+        list.add(test(copy(array), new ShellSorter()));
+        list.add(test(copy(array), new MergeSorter()));
+        list.add(test(copy(array), new SelectionSorter()));
+        list.add(test(copy(array), new InsertionSorter()));
+        list.add(test(copy(array), new BubbleSorter()));
+
+        list
+                .stream()
+                .sorted(Comparator.comparing(SortTimeInfo::getAvg))
+                .forEach(x -> System.out.println(x.toString()))
+        ;
 
     }
 
-    private static void test(int[] array, Sorter sorter) {
+    private static SortTimeInfo test(int[] array, Sorter sorter) {
+        System.out.println(sorter.name() + " - 测试");
         long start = System.nanoTime();
-        int count = sorter.sort(array, from, to);
+        for (int i = 0; i < REPEATS; i++) {
+            int[] copy = copy(array);
+            sorter.sort(copy);
+            if (!checkSorted(copy)) { // 检查排序结果是否正确
+                System.err.println(sorter.name() + "排序失败");
+            }
+        }
         long end = System.nanoTime();
 
-        print(array);
-        System.out.println(sorter.name() + "-循环次数：" + count + "，耗时：" + (end - start) + "ns");
+        SortTimeInfo info = new SortTimeInfo();
+        info.setName(sorter.name());
+        info.setTotal(end - start);
+        info.setAvg((end - start) / REPEATS);
+        info.setLength(array.length);
+
+        // print(array);
         // 判断排序结果是否正确
-        if (!checkSorted(array)) {
-            System.err.println(sorter.name() + "排序失败");
-        }
+        return info;
     }
 
     private static int[] copy(int[] array) {
@@ -79,5 +98,50 @@ public class Main {
      */
     private static boolean checkSorted(int[] array) {
         return Arrays.equals(array, correct);
+    }
+
+    static class SortTimeInfo {
+        private String name;
+        private long avg;
+        private long total;
+        private int length;
+
+        public int getLength() {
+            return length;
+        }
+
+        public void setLength(int length) {
+            this.length = length;
+        }
+
+        @Override
+        public String toString() {
+            String template = "%s - 数组长度：%d - 平均耗时：%dns %dms %ds - 总耗时：%dns %dms %ds";
+            return String.format(template, name, length, avg, (int) (avg / 10e6), (int) (avg / 10e9), total, (int) (total / 10e6), (int) (total / 10e9));
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public long getAvg() {
+            return avg;
+        }
+
+        public void setAvg(long avg) {
+            this.avg = avg;
+        }
+
+        public long getTotal() {
+            return total;
+        }
+
+        public void setTotal(long total) {
+            this.total = total;
+        }
     }
 }
