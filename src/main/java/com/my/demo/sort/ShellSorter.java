@@ -15,7 +15,7 @@ public class ShellSorter implements Sorter {
             gap = gap * 3 + 1; // 动态定义间隔
         }
 
-        for (; gap > 0; gap = gap / 3) {
+        for (; gap > 0; gap = gap / 3) { // 间隔变为上次的1/3，直到1
             for (int i = fromIndex + gap; i < toIndex; i++) {
                 int current = array[i];
                 for (int j = i - gap; j >= fromIndex; j -= gap) {
