@@ -10,13 +10,11 @@ public class InsertionSorter implements Sorter {
     }
 
     @Override
-    public int sort(int[] array, int fromIndex, int toIndex) {
+    public void sort(int[] array, int fromIndex, int toIndex) {
 
-        int count = 0;
         for (int i = fromIndex + 1; i < toIndex; i++) {
             int current = array[i];
             for (int j = i - 1; j >= fromIndex; j--) {
-                count++;
                 if (array[j] < current) {
                     array[j + 1] = current;
                     break;
@@ -28,7 +26,5 @@ public class InsertionSorter implements Sorter {
                 }
             }
         }
-
-        return count;
     }
 }

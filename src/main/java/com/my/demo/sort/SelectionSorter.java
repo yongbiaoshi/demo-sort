@@ -12,15 +12,13 @@ public class SelectionSorter implements Sorter {
     }
 
     @Override
-    public int sort(int[] array, int fromIndex, int toIndex) {
+    public void sort(int[] array, int fromIndex, int toIndex) {
 
-        int count = 0;
         for (int i = fromIndex; i < toIndex; i++) {
             int minIndex = i;
             int minValue = array[i];
             // 查找后续数组中的最小值
             for (int j = i + 1; j < toIndex; j++) {
-                count++;
                 if (array[j] < minValue) {
                     minIndex = j;
                     minValue = array[j];
@@ -31,7 +29,5 @@ public class SelectionSorter implements Sorter {
                 ArrayUtils.swap(array, i, minIndex);
             }
         }
-
-        return count;
     }
 }

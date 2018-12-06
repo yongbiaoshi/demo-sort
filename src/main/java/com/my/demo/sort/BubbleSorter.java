@@ -17,12 +17,10 @@ public class BubbleSorter implements Sorter {
      * 数据排序-冒泡算法
      *
      * @param array 数组
-     * @return 循环次数
      */
     @Override
-    public int sort(int[] array, int fromIndex, int toIndex) {
+    public void sort(int[] array, int fromIndex, int toIndex) {
         boolean change = false; // 标记是否有改变
-        int count = 0;
         for (int i = fromIndex; i < toIndex - 2; i++) {
 
             for (int j = fromIndex; j < toIndex - (i - fromIndex) - 1; j++) {
@@ -31,7 +29,6 @@ public class BubbleSorter implements Sorter {
                     ArrayUtils.swap(array, j, j + 1);
                     change = true;
                 }
-                count++;
             }
 
             if (change) {
@@ -40,6 +37,5 @@ public class BubbleSorter implements Sorter {
                 break; // 如果该次循环没有变化，直接跳出循环
             }
         }
-        return count;
     }
 }

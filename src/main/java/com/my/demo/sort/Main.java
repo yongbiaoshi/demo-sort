@@ -7,11 +7,11 @@ import java.util.stream.IntStream;
 
 public class Main {
 
-    private static final int LEN = 10;
+    private static final int LEN = 10000;
     private static int[] array = newArray(LEN);
     private static int[] correct;
     private static int from = 0; // 排序开始下标
-    private static int to = 10; // 排序结束下标
+    private static int to = 10000; // 排序结束下标
 
     static {
         print(array);
@@ -27,6 +27,7 @@ public class Main {
         test(copy(array), new BubbleSorter());
         test(copy(array), new InsertionSorter());
         test(copy(array), new ShellSorter());
+        test(copy(array), new MergeSorter());
 
     }
 

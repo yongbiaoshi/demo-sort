@@ -7,7 +7,7 @@ public class ShellSorter implements Sorter {
     }
 
     @Override
-    public int sort(int[] array, int fromIndex, int toIndex) {
+    public void sort(int[] array, int fromIndex, int toIndex) {
 
         int len = toIndex - fromIndex;
         int gap = 1;
@@ -15,12 +15,10 @@ public class ShellSorter implements Sorter {
             gap = gap * 3 + 1; // 动态定义间隔
         }
 
-        int count = 0;
         for (; gap > 0; gap = gap / 3) {
             for (int i = fromIndex + gap; i < toIndex; i++) {
                 int current = array[i];
                 for (int j = i - gap; j >= fromIndex; j -= gap) {
-                    count++;
                     if (array[j] < current) {
                         array[j + gap] = current;
                         break;
@@ -33,8 +31,6 @@ public class ShellSorter implements Sorter {
                 }
             }
         }
-
-        return count;
     }
 
 }
