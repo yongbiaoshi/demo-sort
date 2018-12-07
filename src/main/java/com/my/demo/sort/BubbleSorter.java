@@ -21,7 +21,7 @@ public class BubbleSorter implements Sorter {
     @Override
     public void sort(int[] array, int fromIndex, int toIndex) {
         boolean change = false; // 标记是否有改变
-        for (int i = fromIndex; i < toIndex - 2; i++) {
+        for (int i = fromIndex; i < toIndex - 1; i++) {
 
             for (int j = fromIndex; j < toIndex - (i - fromIndex) - 1; j++) {
                 if (array[j] > array[j + 1]) {
